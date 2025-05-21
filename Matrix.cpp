@@ -1,7 +1,7 @@
 ﻿#include "Matrix.h"
 #include <cmath>
 #include "Novice.h"
-#include <cassert>
+#include <assert.h>
 
 // 行列の積
 Matrix4x4 Matrix::Multiply(const Matrix4x4& m1, const Matrix4x4& m2)
@@ -128,4 +128,24 @@ Vector3 Matrix::Transform(const Vector3& vector, const Matrix4x4& matrix) {
     result.z /= w;
 
     return result;
+}
+
+Vector3 Matrix::Cross(const Vector3& v1, const Vector3& v2)
+{
+    Vector3 result = {};
+
+    result = { v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x };
+
+    return result;
+}
+
+// ベクトルをスクリーン描画
+void Matrix::VectorScreenPrintf(int x, int y, const Vector3& vector, const char* name)
+{
+    for (int column = 0; column < 3; ++column)
+    {
+        Novice::ScreenPrintf(x, y, "%1.2f   %1.2f   %1.2f", vector.x, vector.y, vector.z);
+    }
+
+    Novice::ScreenPrintf(x + GetWidth() * 3, y, "%s", name);
 }
